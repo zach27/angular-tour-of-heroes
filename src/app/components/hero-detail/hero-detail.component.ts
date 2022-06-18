@@ -23,7 +23,11 @@ export class HeroDetailComponent implements OnInit {
         this.loadHero(heroId);
     }
 
-    public loadHero(id: number) {
+    public loadHero(id: number): void {
         this.heroService.getHeroById(id).subscribe((hero) => (this.hero = hero));
+    }
+
+    public navigateBack(): void {
+        this.location.back();
     }
 }
