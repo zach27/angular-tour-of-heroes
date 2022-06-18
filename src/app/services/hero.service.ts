@@ -1,9 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, switchMap, tap, Observable, of, throwError, catchError } from 'rxjs';
 import { Hero } from '../hero';
 import { HEROES } from '../mock-heroes';
 import { MessageService } from './message.service';
+
+interface ApiError {
+    message: string;
+}
 
 @Injectable({
     providedIn: 'root',
@@ -31,6 +35,19 @@ export class HeroService {
         );
     }
 
+    public updateHero(hero: Hero): Observable<void> {
+        const test = this.http.put(HeroService.heroesUrl, hero, this.httpOptions).pipe(
+            tap((_) => this.log(`updated hero id=${hero.id}`)),
+            catchError(this.handleError('updateHero'))
+        );
+
+        return test;
+    }
+
+    private httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+
     /**
      * Handle Http operation that failed.
      * Let the app continue.
@@ -38,8 +55,11 @@ export class HeroService {
      * @param operation - name of the operation that failed
      * @param result - optional value to return as the observable result
      */
-    private handleError<T>(operation = 'operation', result?: T) {
-        return (error: any): Observable<T> => {
+    private handleError<T = any>(
+        operation = 'operation',
+        result?: T
+    ): (err: ApiError) => Observable<T> {
+        return (error: ApiError): Observable<T> => {
             // TODO: send the error to remote logging infrastructure
             console.error(error); // log to console instead
 
