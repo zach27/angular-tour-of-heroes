@@ -1,4 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HeroService } from 'src/app/services/hero.service';
 import { Hero } from '../../hero';
 
 @Component({
@@ -7,8 +10,20 @@ import { Hero } from '../../hero';
     styleUrls: ['./hero-detail.component.css'],
 })
 export class HeroDetailComponent implements OnInit {
-    @Input() hero?: Hero;
-    constructor() {}
+    public hero: Hero | undefined;
 
-    ngOnInit(): void {}
+    constructor(
+        private readonly route: ActivatedRoute,
+        private readonly location: Location,
+        private readonly heroService: HeroService
+    ) {}
+
+    ngOnInit(): void {
+        const heroId = Number(this.route.snapshot.paramMap.get('id'));
+        this.loadHero(heroId);
+    }
+
+    public loadHero(id: number) {
+        this.heroService.getHeroById(id).subscribe((hero) => (this.hero = hero));
+    }
 }
