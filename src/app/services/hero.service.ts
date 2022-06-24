@@ -35,6 +35,18 @@ export class HeroService {
         );
     }
 
+    public searchHeroes(term: string): Observable<Hero[]> {
+        console.log('Searching with term:', term);
+        return this.http.get<Hero[]>(`${HeroService.heroesUrl}/?name=${term}`).pipe(
+            tap((heroes) =>
+                heroes.length
+                    ? this.log(`found heroes matching "${term}"`)
+                    : this.log(`no heroes matching "${term}"`)
+            ),
+            catchError(this.handleError<Hero[]>('searchHeroes', []))
+        );
+    }
+
     public addHero(hero: Hero): Observable<Hero> {
         return this.http.post<Hero>(HeroService.heroesUrl, hero, this.httpOptions).pipe(
             tap((newHero: Hero) => this.log(`added hero with id=${newHero.id}`)),
