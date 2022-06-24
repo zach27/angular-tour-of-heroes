@@ -14,6 +14,11 @@ interface ListResponse {
     total: number;
 }
 
+interface AddHeroResponse {
+    message: string;
+    hero: Hero;
+}
+
 @Injectable({
     providedIn: 'root',
 })
@@ -49,8 +54,9 @@ export class HeroService {
     }
 
     public addHero(hero: Omit<Hero, 'id'>): Observable<Hero> {
-        return this.http.post<Hero>(HeroService.heroesUrl, hero, this.httpOptions).pipe(
-            tap((newHero: Hero) => this.log(`added hero with id=${newHero.id}`)),
+        return this.http.post<AddHeroResponse>(HeroService.heroesUrl, hero, this.httpOptions).pipe(
+            tap((response) => this.log(`added hero with id=${response.hero.id}`)),
+            map((response) => response.hero),
             catchError(this.handleError<Hero>('addHero'))
         );
     }
