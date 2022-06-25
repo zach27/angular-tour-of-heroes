@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { HeroesComponent } from './heroes/heroes.component';
 
@@ -25,7 +26,7 @@ describe('AppComponent', () => {
 
     it('should render title', () => {
         fixture.detectChanges();
-        const compiled = fixture.nativeElement as HTMLElement;
-        expect(compiled.querySelector('h1')?.textContent).toBe('Tour of Heroes');
+        const headerText = fixture.debugElement.query(By.css('h1')).nativeElement.textContent;
+        expect(headerText).toBe('Tour of Heroes');
     });
 });

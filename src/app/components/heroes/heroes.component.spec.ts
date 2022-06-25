@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { Hero } from 'src/app/hero';
 import { HeroService } from 'src/app/services/hero.service';
@@ -59,9 +60,7 @@ describe('HeroesComponent', () => {
 
         it('should render list of heroes', () => {
             fixture.detectChanges();
-
-            const heroesElement: HTMLElement = fixture.nativeElement;
-            const heroButtons = heroesElement.querySelectorAll('.heroes button');
+            const heroButtons = fixture.debugElement.queryAll(By.css('.heroes button'));
             expect(heroButtons.length).toBe(2);
         });
     });
