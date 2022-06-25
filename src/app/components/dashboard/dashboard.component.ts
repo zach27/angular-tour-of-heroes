@@ -11,6 +11,7 @@ import { HeroService } from 'src/app/services/hero.service';
 export class DashboardComponent implements OnInit, OnDestroy {
     public heroes: Hero[] = [];
     private readonly destroyed$ = new Subject<void>();
+    public loading = false;
 
     constructor(private readonly heroService: HeroService) {}
 
@@ -24,11 +25,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     public loadHeroes(): void {
+        this.loading = true;
         this.heroService
             .getHeroes()
             .pipe(takeUntil(this.destroyed$))
             .subscribe((heroes) => {
                 this.heroes = heroes.slice(1, 5);
+                this.loading = false;
             });
     }
 }

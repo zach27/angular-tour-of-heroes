@@ -48,3 +48,14 @@ a {
 a:hover {
     background-color: #000;
 }
+
+@keyframes spinner {
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+.spinner {
+    animation: spinner 0.8s steps(12) infinite;
+    width: 8rem;
+}

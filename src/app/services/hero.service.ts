@@ -23,7 +23,7 @@ interface AddHeroResponse {
     providedIn: 'root',
 })
 export class HeroService {
-    private static readonly heroesUrl = 'https://bootcamp.unclezach.org/api/heroes';
+    private static readonly heroesUrl = 'https://bootcamp.unclezach.org/slow-api/heroes';
 
     constructor(
         private readonly messageService: MessageService,
