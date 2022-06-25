@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { Hero } from 'src/app/hero';
 import { HeroService } from 'src/app/services/hero.service';
 
@@ -7,8 +8,10 @@ import { HeroService } from 'src/app/services/hero.service';
     templateUrl: './heroes.component.html',
     styleUrls: ['./heroes.component.css'],
 })
-export class HeroesComponent implements OnInit {
+export class HeroesComponent implements OnInit, OnDestroy {
     public heroes: Hero[] = [];
+
+    private readonly destroyed$ = new Subject<void>();
 
     public constructor(private readonly heroService: HeroService) {}
 
@@ -16,8 +19,16 @@ export class HeroesComponent implements OnInit {
         this.loadHeroes();
     }
 
+    public ngOnDestroy(): void {
+        this.destroyed$.next();
+        this.destroyed$.complete();
+    }
+
     public loadHeroes(): void {
-        this.heroService.getHeroes().subscribe((heroes) => (this.heroes = heroes));
+        this.heroService
+            .getHeroes()
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe((heroes) => (this.heroes = heroes));
     }
 
     public add(name: string): void {

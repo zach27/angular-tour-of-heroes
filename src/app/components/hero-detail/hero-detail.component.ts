@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { HeroService } from 'src/app/services/hero.service';
 import { Hero } from '../../hero';
 
@@ -9,8 +10,10 @@ import { Hero } from '../../hero';
     templateUrl: './hero-detail.component.html',
     styleUrls: ['./hero-detail.component.css'],
 })
-export class HeroDetailComponent implements OnInit {
+export class HeroDetailComponent implements OnInit, OnDestroy {
     public hero: Hero | undefined;
+
+    private readonly destroyed$ = new Subject<void>();
 
     constructor(
         private readonly route: ActivatedRoute,
@@ -23,8 +26,16 @@ export class HeroDetailComponent implements OnInit {
         this.loadHero(heroId);
     }
 
+    public ngOnDestroy(): void {
+        this.destroyed$.next();
+        this.destroyed$.complete();
+    }
+
     public loadHero(id: number): void {
-        this.heroService.getHeroById(id).subscribe((hero) => (this.hero = hero));
+        this.heroService
+            .getHeroById(id)
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe((hero) => (this.hero = hero));
     }
 
     public navigateBack(): void {
@@ -33,7 +44,10 @@ export class HeroDetailComponent implements OnInit {
 
     public save(): void {
         if (this.hero) {
-            this.heroService.updateHero(this.hero).subscribe(() => this.navigateBack());
+            this.heroService
+                .updateHero(this.hero)
+                .pipe(takeUntil(this.destroyed$))
+                .subscribe(() => this.navigateBack());
         }
     }
 }
