@@ -21,7 +21,7 @@ export class HeroSearchComponent implements OnInit {
     public ngOnInit(): void {
         this.heroes$ = new Observable<Hero[]>();
         this.heroes$ = this.searchTerm$.pipe(
-            debounceTime(500),
+            debounceTime(300),
             filter((term) => !!term),
             distinctUntilChanged(),
             switchMap((term) => this.heroService.searchHeroes(term))
