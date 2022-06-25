@@ -10,6 +10,7 @@ import { HeroDetailComponent } from './components/hero-detail/hero-detail.compon
 import { HeroesComponent } from './components/heroes/heroes.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { HeroSearchComponent } from './components/hero-search/hero-search.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { HeroSearchComponent } from './components/hero-search/hero-search.compon
         MessagesComponent,
         DashboardComponent,
         HeroSearchComponent,
+        LoadingSpinnerComponent,
     ],
     imports: [HttpClientModule, FormsModule, BrowserModule, AppRoutingModule],
     providers: [],
