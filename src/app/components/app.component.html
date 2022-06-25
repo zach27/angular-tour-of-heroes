@@ -5,5 +5,22 @@
     <a routerLink="/heroes">Heroes</a>
 </nav>
 
+<app-card>
+    <ng-container header>
+        <img src="/assets/hamburger.jpg" />
+        <h2>A card all about food</h2>
+    </ng-container>
+
+    <ng-container body>
+        <p>Here is my card content!!!!</p>
+        <p>My favorite foods:</p>
+        <ul>
+            <li>Pizza</li>
+            <li>Hotdogs</li>
+            <li>Biscuits and gravy</li>
+        </ul>
+    </ng-container>
+</app-card>
+
 <router-outlet></router-outlet>
 <app-messages></app-messages>
