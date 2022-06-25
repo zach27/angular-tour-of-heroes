@@ -18,7 +18,7 @@ export class HeroDetailComponent implements OnInit {
         private readonly heroService: HeroService
     ) {}
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         const heroId = Number(this.route.snapshot.paramMap.get('id'));
         this.loadHero(heroId);
     }
