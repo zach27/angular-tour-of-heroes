@@ -74,8 +74,8 @@ fdescribe('HeroesComponent', () => {
         component.heroes = mockHeros;
         fixture.detectChanges();
 
-        const herosElement: HTMLElement = fixture.nativeElement;
-        const heroButtons = herosElement.querySelectorAll('.heroes button');
+        const htmlElement: HTMLElement = fixture.nativeElement;
+        const heroButtons = htmlElement.querySelectorAll('.heroes button');
         expect(heroButtons.length).toBe(2);
     });
 
